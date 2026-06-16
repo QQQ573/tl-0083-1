@@ -1,14 +1,18 @@
 import Phaser from 'phaser'
-import type { LevelConfig, Drink, Step, GameStats, StepType } from '../types'
+import type { LevelConfig, Drink, Step, GameStats } from '../types'
 import { STEP_COLORS } from '../types'
 import { audioManager } from '../utils/AudioManager'
 
-interface DraggableItem {
+interface BeltItem {
   container: Phaser.GameObjects.Container
   step: Step
-  originalX: number
-  originalY: number
-  onBelt: boolean
+  velocity: number
+  state: 'onBelt' | 'dragging' | 'placed' | 'wrong'
+}
+
+interface AssembledItem {
+  container: Phaser.GameObjects.Container
+  step: Step
 }
 
 export class GameScene extends Phaser.Scene {
@@ -23,11 +27,9 @@ export class GameScene extends Phaser.Scene {
   private orderStartTime = 0
   private orderTimes: number[] = []
   private stepErrors: Record<string, number> = {}
-  private beltItems: DraggableItem[] = []
-  private assembledSteps: Step[] = []
+  private beltItems: BeltItem[] = []
+  private assembledItems: AssembledItem[] = []
   private tickerTexts: Phaser.GameObjects.Text[] = []
-  private assembledContainer!: Phaser.GameObjects.Container
-  private beltContainer!: Phaser.GameObjects.Container
   private timeText!: Phaser.GameObjects.Text
   private scoreText!: Phaser.GameObjects.Text
   private currentOrderText!: Phaser.GameObjects.Text
@@ -35,8 +37,11 @@ export class GameScene extends Phaser.Scene {
   private isPaused = false
   private isRedoing = false
   private bgmTempo = 1
-  private lastBeltSpawn = 0
   private beltSpeed = 1.2
+  private beltY = 0
+  private zoneY = 0
+  private zoneX = 0
+  private zoneWidth = 0
 
   constructor() {
     super('GameScene')
@@ -52,14 +57,21 @@ export class GameScene extends Phaser.Scene {
     this.consecutiveErrors = 0
     this.orderTimes = []
     this.stepErrors = {}
-    this.assembledSteps = []
     this.beltItems = []
+    this.assembledItems = []
     this.isRedoing = false
+    this.bgmTempo = 1
+    this.beltSpeed = 1.2
   }
 
   create(): void {
     const { width, height } = this.scale
     const brandColor = Phaser.Display.Color.HexStringToColor(this.level.brandColor).color
+
+    this.beltY = height - 260
+    this.zoneY = height - 120
+    this.zoneX = width / 2
+    this.zoneWidth = 500
 
     this.add.rectangle(width / 2, height / 2, width, height, 0x1A1A2E)
     this.add.rectangle(width / 2, 70, width, 70, brandColor, 0.3)
@@ -67,7 +79,7 @@ export class GameScene extends Phaser.Scene {
     this.createHUD()
     this.createTicker()
     this.createAssemblyZone()
-    this.createBelt()
+    this.createBeltBackground()
     this.createStepsGuide()
 
     this.nextDrink()
@@ -128,27 +140,6 @@ export class GameScene extends Phaser.Scene {
       fontSize: '16px',
       color: '#AAAAAA',
     }).setOrigin(0, 0.5)
-
-    const upcomingDrinks = this.level.drinks.slice(this.currentDrinkIndex, this.currentDrinkIndex + 5)
-    const tickerStr = upcomingDrinks.map((d, i) =>
-      i === 0 ? `[${d.name} ${d.modifier}]` : `${d.name} ${d.modifier}`
-    ).join('   •   ')
-
-    const tickerText = this.add.text(180, tickerY, tickerStr, {
-      fontFamily: 'system-ui, sans-serif',
-      fontSize: '16px',
-      color: '#FFFFFF',
-    }).setOrigin(0, 0.5)
-
-    this.tickerTexts.push(tickerText)
-
-    this.tweens.add({
-      targets: tickerText,
-      x: -1000,
-      duration: 20000,
-      ease: 'Linear',
-      loop: -1,
-    })
   }
 
   private updateTicker(): void {
@@ -186,39 +177,33 @@ export class GameScene extends Phaser.Scene {
   }
 
   private createAssemblyZone(): void {
-    const { width, height } = this.scale
-    const zoneY = height - 120
+    const { width } = this.scale
 
-    this.add.rectangle(width / 2, zoneY, 500, 100, 0x3D3D54, 0.6)
+    const zone = this.add.rectangle(this.zoneX, this.zoneY, this.zoneWidth, 100, 0x3D3D54, 0.6)
       .setStrokeStyle(2, 0xFFFFFF, 0.3)
+    zone.setData('isZone', true)
 
-    this.add.text(width / 2, zoneY - 45, '✅ 出品区 (拖入此处)', {
+    this.add.text(this.zoneX, this.zoneY - 45, '✅ 出品区 (拖入配料按正确顺序制作)', {
       fontFamily: 'system-ui, sans-serif',
       fontSize: '16px',
       color: '#AAAAAA',
     }).setOrigin(0.5, 0.5)
-
-    this.assembledContainer = this.add.container(width / 2 - 200, zoneY)
   }
 
-  private createBelt(): void {
-    const { width, height } = this.scale
-    const beltY = height - 260
+  private createBeltBackground(): void {
+    const { width } = this.scale
 
-    this.add.rectangle(width / 2, beltY, width, 80, 0x4A4A6A, 0.4)
-    this.add.rectangle(width / 2, beltY + 35, width, 4, 0x6A6A8A)
+    this.add.rectangle(width / 2, this.beltY, width, 80, 0x4A4A6A, 0.4)
+    this.add.rectangle(width / 2, this.beltY + 35, width, 4, 0x6A6A8A)
 
-    this.add.text(30, beltY - 45, '🔄 传送带 (拖拽配料到出品区)', {
+    this.add.text(30, this.beltY - 45, '🔄 传送带 (拖拽配料到出品区)', {
       fontFamily: 'system-ui, sans-serif',
       fontSize: '16px',
       color: '#AAAAAA',
     })
-
-    this.beltContainer = this.add.container(0, beltY)
   }
 
   private createStepsGuide(): void {
-    const { width } = this.scale
     this.stepsGuideContainer = this.add.container(30, 220)
   }
 
@@ -290,13 +275,12 @@ export class GameScene extends Phaser.Scene {
     this.currentDrink = this.level.drinks[this.currentDrinkIndex]
     this.currentStepIndex = 0
     this.consecutiveErrors = 0
-    this.assembledSteps = []
-    this.assembledContainer.removeAll(true)
 
     const modifierText = this.currentDrink.modifier ? ` (${this.currentDrink.modifier})` : ''
     this.currentOrderText.setText(`正在制作: ${this.currentDrink.name}${modifierText}`)
 
     this.clearBelt()
+    this.clearAssembled()
     this.spawnBeltItems()
     this.updateStepsGuide()
     this.updateTicker()
@@ -310,14 +294,14 @@ export class GameScene extends Phaser.Scene {
     Phaser.Utils.Array.Shuffle(items)
 
     items.forEach((step, index) => {
-      const x = width + 100 + index * 130
+      const x = width + 100 + index * 140 + Phaser.Math.Between(0, 50)
       this.createBeltItem(step, x)
     })
   }
 
   private createBeltItem(step: Step, x: number): void {
     const color = STEP_COLORS[step.type] || 0x888888
-    const container = this.add.container(x, 0)
+    const container = this.add.container(x, this.beltY)
 
     const bg = this.add.rectangle(0, 0, 75, 70, color, 0.9)
       .setStrokeStyle(2, 0xFFFFFF, 0.5)
@@ -331,90 +315,113 @@ export class GameScene extends Phaser.Scene {
 
     container.add([bg, emoji, name])
     container.setSize(75, 70)
-    container.setInteractive({ draggable: true, useHandCursor: true })
 
-    const item: DraggableItem = {
+    const hitArea = new Phaser.Geom.Rectangle(-37.5, -35, 75, 70)
+    container.setInteractive(hitArea, Phaser.Geom.Rectangle.Contains)
+    container.input!.cursor = 'pointer'
+    this.input.setDraggable(container)
+
+    const item: BeltItem = {
       container,
       step,
-      originalX: x,
-      originalY: 0,
-      onBelt: true,
+      velocity: this.beltSpeed,
+      state: 'onBelt',
     }
 
     this.beltItems.push(item)
-    this.beltContainer.add(container)
 
-    this.input.setDraggable(container)
+    let dragStartX = 0
+    let dragStartY = 0
 
-    container.on('dragstart', () => {
+    container.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
+      if (item.state !== 'onBelt') return
+      dragStartX = pointer.x - container.x
+      dragStartY = pointer.y - container.y
+    })
+
+    container.on('dragstart', (_: unknown, pointer: Phaser.Input.Pointer) => {
+      if (item.state !== 'onBelt') {
+        return
+      }
+      item.state = 'dragging'
       container.setScale(1.1)
       bg.setStrokeStyle(3, 0xFFD700)
+      container.setDepth(2000)
     })
 
     container.on('drag', (_: unknown, dragX: number, dragY: number) => {
-      const parent = container.parentContainer as Phaser.GameObjects.Container
-      if (parent) {
-        container.x = dragX - parent.x
-        container.y = dragY - parent.y
-      } else {
-        container.x = dragX
-        container.y = dragY
-      }
+      if (item.state !== 'dragging') return
+      container.x = dragX
+      container.y = dragY
     })
 
     container.on('dragend', () => {
+      if (item.state !== 'dragging') return
       container.setScale(1)
       bg.setStrokeStyle(2, 0xFFFFFF, 0.5)
 
-      const worldX = container.x + (container.parentContainer?.x || 0)
-      const worldY = container.y + (container.parentContainer?.y || 0)
-      const { height, width } = this.scale
-      const zoneY = height - 120
+      const worldX = container.x
+      const worldY = container.y
 
-      if (Math.abs(worldY - zoneY) < 60 && worldX > width / 2 - 250 && worldX < width / 2 + 250) {
-        this.handleDrop(item, worldX, worldY)
+      if (this.isInZone(worldX, worldY)) {
+        this.handleDrop(item)
       } else {
-        container.x = item.originalX
-        container.y = item.originalY
+        item.state = 'onBelt'
+        container.y = this.beltY
+        container.setDepth(0)
       }
     })
   }
 
-  private handleDrop(item: DraggableItem, worldX: number, worldY: number): void {
+  private isInZone(x: number, y: number): boolean {
+    const halfWidth = this.zoneWidth / 2
+    return Math.abs(y - this.zoneY) < 70 &&
+           x > this.zoneX - halfWidth &&
+           x < this.zoneX + halfWidth
+  }
+
+  private handleDrop(item: BeltItem): void {
     const expectedStep = this.currentDrink.steps[this.currentStepIndex]
 
     if (item.step.id === expectedStep.id) {
-      this.handleCorrectStep(item, worldX, worldY)
+      this.handleCorrectStep(item)
     } else {
       this.handleWrongStep(item)
     }
   }
 
-  private handleCorrectStep(item: DraggableItem, _worldX: number, _worldY: number): void {
+  private handleCorrectStep(item: BeltItem): void {
     audioManager.playSound('correct')
 
     this.consecutiveErrors = 0
-    this.assembledSteps.push(item.step)
     this.currentStepIndex++
 
-    this.beltContainer.remove(item.container)
-    this.beltItems = this.beltItems.filter(i => i !== item)
+    const index = this.beltItems.indexOf(item)
+    if (index > -1) {
+      this.beltItems.splice(index, 1)
+    }
 
-    const localX = this.assembledSteps.length * 70 - 35
-    item.container.x = localX
-    item.container.y = 0
-    item.container.disableInteractive()
-    this.assembledContainer.add(item.container)
+    item.state = 'placed'
+    item.container.setDepth(100)
 
-    this.cameras.main.flash(100, 76, 175, 80, true)
+    this.assembledItems.push({
+      container: item.container,
+      step: item.step,
+    })
+
+    this.updateAssembledPositions()
+
+    this.cameras.main.flash(100, 76, 175, 80)
     this.updateStepsGuide()
 
     if (this.currentStepIndex >= this.currentDrink.steps.length) {
-      this.completeOrder()
+      this.time.delayedCall(300, () => {
+        this.completeOrder()
+      })
     }
   }
 
-  private handleWrongStep(item: DraggableItem): void {
+  private handleWrongStep(item: BeltItem): void {
     audioManager.playSound('wrong')
 
     this.consecutiveErrors++
@@ -427,14 +434,29 @@ export class GameScene extends Phaser.Scene {
 
     this.cameras.main.shake(200, 0.01)
 
-    item.container.x = item.originalX
-    item.container.y = item.originalY
+    item.state = 'onBelt'
+    item.container.y = this.beltY
+    item.container.setDepth(0)
 
     this.updateStepsGuide()
 
     if (this.consecutiveErrors >= 3) {
       this.triggerRedo()
     }
+  }
+
+  private updateAssembledPositions(): void {
+    const startX = this.zoneX - (this.assembledItems.length - 1) * 40 - 35
+    this.assembledItems.forEach((item, index) => {
+      const targetX = startX + index * 80
+      this.tweens.add({
+        targets: item.container,
+        x: targetX,
+        y: this.zoneY,
+        duration: 200,
+        ease: 'Quad.Out',
+      })
+    })
   }
 
   private triggerRedo(): void {
@@ -457,11 +479,10 @@ export class GameScene extends Phaser.Scene {
       overlay.destroy()
       text.destroy()
 
-      this.assembledContainer.removeAll(true)
-      this.assembledSteps = []
       this.currentStepIndex = 0
       this.isRedoing = false
 
+      this.clearAssembled()
       this.clearBelt()
       this.spawnBeltItems()
       this.updateStepsGuide()
@@ -496,6 +517,11 @@ export class GameScene extends Phaser.Scene {
     this.beltItems = []
   }
 
+  private clearAssembled(): void {
+    this.assembledItems.forEach(item => item.container.destroy())
+    this.assembledItems = []
+  }
+
   private updateTimer(): void {
     if (this.isPaused || this.isRedoing) return
 
@@ -505,6 +531,9 @@ export class GameScene extends Phaser.Scene {
     if (this.timeRemaining <= 25 && this.bgmTempo === 1) {
       this.bgmTempo = 1.5
       this.beltSpeed = 2
+      this.beltItems.forEach(item => {
+        item.velocity = this.beltSpeed
+      })
       audioManager.setBgmTempo(1.5)
     }
 
@@ -558,12 +587,11 @@ export class GameScene extends Phaser.Scene {
     if (this.isPaused || this.isRedoing) return
 
     this.beltItems.forEach(item => {
-      if (item.onBelt) {
-        item.originalX -= this.beltSpeed * (delta / 16)
-        item.container.x = item.originalX
+      if (item.state === 'onBelt') {
+        item.container.x -= item.velocity * (delta / 16)
 
-        if (item.originalX < -50) {
-          item.originalX = this.scale.width + 100 + Phaser.Math.Between(0, 200)
+        if (item.container.x < -50) {
+          item.container.x = this.scale.width + 100 + Phaser.Math.Between(0, 200)
         }
       }
     })
@@ -576,10 +604,6 @@ export class GameScene extends Phaser.Scene {
     const avgSeconds = this.orderTimes.length > 0
       ? this.orderTimes.reduce((a, b) => a + b, 0) / this.orderTimes.length
       : 0
-
-    const sortedErrors = Object.entries(this.stepErrors)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 5)
 
     const stats: GameStats = {
       avgSeconds,

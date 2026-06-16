@@ -10,16 +10,13 @@ export class BootScene extends Phaser.Scene {
   }
 
   preload(): void {
-    this.load.json('starbucks', starbucksData as unknown as string)
-    this.load.json('heytea', heyteaData as unknown as string)
-    this.load.json('mixue', mixueData as unknown as string)
   }
 
   create(): void {
     const levels: Record<string, LevelConfig> = {
-      starbucks: this.cache.json.get('starbucks'),
-      heytea: this.cache.json.get('heytea'),
-      mixue: this.cache.json.get('mixue'),
+      starbucks: starbucksData as unknown as LevelConfig,
+      heytea: heyteaData as unknown as LevelConfig,
+      mixue: mixueData as unknown as LevelConfig,
     }
     this.registry.set('levels', levels)
     this.registry.set('muted', false)
