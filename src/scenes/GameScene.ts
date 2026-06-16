@@ -179,11 +179,11 @@ export class GameScene extends Phaser.Scene {
   private createAssemblyZone(): void {
     const { width } = this.scale
 
-    const zone = this.add.rectangle(this.zoneX, this.zoneY, this.zoneWidth, 100, 0x3D3D54, 0.6)
+    const zone = this.add.rectangle(this.zoneX, this.zoneY, this.zoneWidth, 130, 0x3D3D54, 0.6)
       .setStrokeStyle(2, 0xFFFFFF, 0.3)
     zone.setData('isZone', true)
 
-    this.add.text(this.zoneX, this.zoneY - 45, '✅ 出品区 (拖入配料按正确顺序制作)', {
+    this.add.text(this.zoneX, this.zoneY - 55, '✅ 出品区 (拖入配料按正确顺序制作)', {
       fontFamily: 'system-ui, sans-serif',
       fontSize: '16px',
       color: '#AAAAAA',
@@ -193,8 +193,8 @@ export class GameScene extends Phaser.Scene {
   private createBeltBackground(): void {
     const { width } = this.scale
 
-    this.add.rectangle(width / 2, this.beltY, width, 80, 0x4A4A6A, 0.4)
-    this.add.rectangle(width / 2, this.beltY + 35, width, 4, 0x6A6A8A)
+    this.add.rectangle(width / 2, this.beltY, width, 110, 0x4A4A6A, 0.4)
+    this.add.rectangle(width / 2, this.beltY + 50, width, 4, 0x6A6A8A)
 
     this.add.text(30, this.beltY - 45, '🔄 传送带 (拖拽配料到出品区)', {
       fontFamily: 'system-ui, sans-serif',
@@ -294,7 +294,7 @@ export class GameScene extends Phaser.Scene {
     Phaser.Utils.Array.Shuffle(items)
 
     items.forEach((step, index) => {
-      const x = width + 100 + index * 140 + Phaser.Math.Between(0, 50)
+      const x = width + 100 + index * 170 + Phaser.Math.Between(0, 30)
       this.createBeltItem(step, x)
     })
   }
@@ -303,23 +303,25 @@ export class GameScene extends Phaser.Scene {
     const color = STEP_COLORS[step.type] || 0x888888
     const container = this.add.container(x, this.beltY)
 
-    const bg = this.add.rectangle(0, 0, 75, 70, color, 0.9)
+    const bg = this.add.rectangle(0, 0, 95, 90, color, 0.9)
       .setStrokeStyle(2, 0xFFFFFF, 0.5)
-    const emoji = this.add.text(0, -10, step.emoji, { fontSize: '32px' }).setOrigin(0.5)
-    const name = this.add.text(0, 22, step.name, {
+    const emoji = this.add.text(0, -12, step.emoji, { fontSize: '36px' }).setOrigin(0.5)
+    const name = this.add.text(0, 28, step.name, {
       fontFamily: 'system-ui, sans-serif',
-      fontSize: '11px',
+      fontSize: '13px',
       color: '#000000',
       fontStyle: 'bold',
     }).setOrigin(0.5)
 
     container.add([bg, emoji, name])
-    container.setSize(75, 70)
+    container.setSize(95, 90)
 
-    const hitArea = new Phaser.Geom.Rectangle(-37.5, -35, 75, 70)
+    const hitArea = new Phaser.Geom.Rectangle(-47.5, -45, 95, 90)
     container.setInteractive(hitArea, Phaser.Geom.Rectangle.Contains)
     container.input!.cursor = 'pointer'
     this.input.setDraggable(container)
+    this.input.dragDistanceThreshold = 0
+    this.input.dragTimeThreshold = 0
 
     const item: BeltItem = {
       container,
@@ -330,13 +332,20 @@ export class GameScene extends Phaser.Scene {
 
     this.beltItems.push(item)
 
-    let dragStartX = 0
-    let dragStartY = 0
+    container.on('pointerover', () => {
+      if (item.state === 'onBelt') {
+        container.setScale(1.05)
+        bg.setStrokeStyle(3, 0xFFD700)
+        container.setDepth(100)
+      }
+    })
 
-    container.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
-      if (item.state !== 'onBelt') return
-      dragStartX = pointer.x - container.x
-      dragStartY = pointer.y - container.y
+    container.on('pointerout', () => {
+      if (item.state === 'onBelt') {
+        container.setScale(1)
+        bg.setStrokeStyle(2, 0xFFFFFF, 0.5)
+        container.setDepth(0)
+      }
     })
 
     container.on('dragstart', (_: unknown, pointer: Phaser.Input.Pointer) => {
@@ -344,8 +353,8 @@ export class GameScene extends Phaser.Scene {
         return
       }
       item.state = 'dragging'
-      container.setScale(1.1)
-      bg.setStrokeStyle(3, 0xFFD700)
+      container.setScale(1.15)
+      bg.setStrokeStyle(4, 0xFFD700)
       container.setDepth(2000)
     })
 
@@ -375,7 +384,7 @@ export class GameScene extends Phaser.Scene {
 
   private isInZone(x: number, y: number): boolean {
     const halfWidth = this.zoneWidth / 2
-    return Math.abs(y - this.zoneY) < 70 &&
+    return Math.abs(y - this.zoneY) < 90 &&
            x > this.zoneX - halfWidth &&
            x < this.zoneX + halfWidth
   }
@@ -446,9 +455,9 @@ export class GameScene extends Phaser.Scene {
   }
 
   private updateAssembledPositions(): void {
-    const startX = this.zoneX - (this.assembledItems.length - 1) * 40 - 35
+    const startX = this.zoneX - (this.assembledItems.length - 1) * 50 - 47.5
     this.assembledItems.forEach((item, index) => {
-      const targetX = startX + index * 80
+      const targetX = startX + index * 100
       this.tweens.add({
         targets: item.container,
         x: targetX,
