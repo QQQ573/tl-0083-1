@@ -261,6 +261,9 @@ export class GameScene extends Phaser.Scene {
     })
     this.stepsGuideContainer.add(title)
 
+    const book = errorBookManager.getBrandErrorBook(this.levelId)
+    const drinkErrors = book.drinks.find(d => d.drinkName === this.currentDrink.name)
+
     this.currentDrink.steps.forEach((step, index) => {
       const y = 35 + index * 32
       const isCompleted = index < this.currentStepIndex
@@ -269,20 +272,32 @@ export class GameScene extends Phaser.Scene {
       const color = isCompleted ? '#4CAF50' : isCurrent ? '#FFD700' : '#888888'
       const prefix = isCompleted ? '✓' : isCurrent ? '→' : '○'
 
-      const stepText = this.add.text(0, y, `${prefix} ${step.emoji} ${step.name}`, {
+      const stepErrorKey = `${this.currentDrink.name}-step${index}`
+      const stepErrorCount = drinkErrors?.steps.find(s => s.stepIndex === index)?.count || 0
+
+      let stepStr = `${prefix} ${step.emoji} ${step.name}`
+      if (stepErrorCount > 0) {
+        stepStr += `  ⚠️错${stepErrorCount}次`
+      }
+
+      const stepText = this.add.text(0, y, stepStr, {
         fontFamily: 'system-ui, sans-serif',
         fontSize: '16px',
-        color,
+        color: stepErrorCount > 0 && !isCompleted ? '#FF9800' : color,
+        fontStyle: stepErrorCount > 0 ? 'bold' : 'normal',
       })
       this.stepsGuideContainer.add(stepText)
     })
 
+    const stepsHeight = 35 + this.currentDrink.steps.length * 32
+
     if (this.consecutiveErrors > 0) {
-      const errorY = 35 + this.currentDrink.steps.length * 32 + 10
+      const errorY = stepsHeight + 10
       const errorText = this.add.text(0, errorY, `⚠️ 连续错误: ${this.consecutiveErrors}/3`, {
         fontFamily: 'system-ui, sans-serif',
         fontSize: '14px',
         color: '#FF6B6B',
+        fontStyle: 'bold',
       })
       this.stepsGuideContainer.add(errorText)
     }
@@ -291,6 +306,7 @@ export class GameScene extends Phaser.Scene {
     const progressX = width - 200
     const progressY = 220
     this.add.rectangle(progressX, progressY, 150, 120, 0x2D2D44, 0.6)
+      .setStrokeStyle(1, 0x4A4A6A)
     this.add.text(progressX, progressY - 40, `进度`, {
       fontFamily: 'system-ui, sans-serif',
       fontSize: '16px',
@@ -518,11 +534,12 @@ export class GameScene extends Phaser.Scene {
 
     const { width, height } = this.scale
     const overlay = this.add.rectangle(width / 2, height / 2, width, height, 0x000000, 0.7)
-    const text = this.add.text(width / 2, height / 2, '⚠️ 连续三次错误！重做本单（不扣分，耗时+15秒）', {
+    const text = this.add.text(width / 2, height / 2, '⚠️ 连续三次错误！重做本单\n已记入错题本（不扣分，耗时+15秒）', {
       fontFamily: 'system-ui, sans-serif',
       fontSize: '28px',
       color: '#FF6B6B',
       fontStyle: 'bold',
+      align: 'center',
     }).setOrigin(0.5)
 
     this.timeRemaining = Math.max(0, this.timeRemaining - 15)

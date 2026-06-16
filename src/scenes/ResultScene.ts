@@ -67,7 +67,7 @@ export class ResultScene extends Phaser.Scene {
 
     if (book.totalErrors === 0) return
 
-    this.add.text(30, 560, '📚 累计错题本', {
+    this.add.text(30, 550, '📚 累计错题本（跨局累计）', {
       fontFamily: 'system-ui, sans-serif',
       fontSize: '18px',
       color: '#FFD700',
@@ -76,7 +76,7 @@ export class ResultScene extends Phaser.Scene {
 
     const summary = book.drinks.slice(0, 3)
     summary.forEach((d, i) => {
-      const y = 590 + i * 26
+      const y = 585 + i * 26
       this.add.text(30, y, `${i + 1}. ${d.drinkName} (累计错 ${d.totalErrors} 次)`, {
         fontFamily: 'system-ui, sans-serif',
         fontSize: '14px',
@@ -166,9 +166,9 @@ export class ResultScene extends Phaser.Scene {
 
   private showTopErrors(): void {
     const { width } = this.scale
-    const startY = 560
+    const startY = 550
 
-    this.add.text(width / 2, startY - 30, '⚠️ 最易错步骤排行', {
+    this.add.text(width / 2 + 130, startY - 30, '⚠️ 最易错步骤排行', {
       fontFamily: 'system-ui, sans-serif',
       fontSize: '22px',
       color: '#FFFFFF',
@@ -180,7 +180,7 @@ export class ResultScene extends Phaser.Scene {
       .slice(0, 5)
 
     if (errors.length === 0) {
-      this.add.text(width / 2, startY + 20, '🎉 完美！零失误', {
+      this.add.text(width / 2 + 130, startY + 20, '🎉 完美！零失误', {
         fontFamily: 'system-ui, sans-serif',
         fontSize: '20px',
         color: '#4CAF50',
@@ -188,7 +188,7 @@ export class ResultScene extends Phaser.Scene {
       return
     }
 
-    this.add.rectangle(width / 2, startY + 10 + errors.length * 28, 500, errors.length * 56 + 20, 0x2D2D44, 0.6)
+    this.add.rectangle(width / 2 + 130, startY + 10 + errors.length * 28, 400, errors.length * 56 + 20, 0x2D2D44, 0.6)
 
     errors.forEach(([key, count], index) => {
       const y = startY + index * 28
@@ -196,7 +196,7 @@ export class ResultScene extends Phaser.Scene {
       const stepIndex = parseInt(stepStr)
 
       const text = `${index + 1}. ${drinkName} - 第 ${stepIndex + 1} 步  (错误 ${count} 次)`
-      this.add.text(width / 2, y, text, {
+      this.add.text(width / 2 + 130, y, text, {
         fontFamily: 'system-ui, sans-serif',
         fontSize: '16px',
         color: index < 2 ? '#FF6B6B' : index < 4 ? '#FF9800' : '#FFC107',
@@ -244,10 +244,14 @@ export class ResultScene extends Phaser.Scene {
       .setStrokeStyle(2, book.totalErrors > 0 ? 0xFFC107 : 0x777777)
       .setInteractive({ useHandCursor: book.totalErrors > 0 })
 
-    this.add.text(width / 2 + 220, height - 50, book.totalErrors > 0 ? '🎯 去专项训练' : '暂无错题', {
+    const trainBtnText = book.totalErrors > 0
+      ? `🎯 去专项训练 (${book.totalErrors}错)`
+      : '暂无错题'
+    this.add.text(width / 2 + 220, height - 50, trainBtnText, {
       fontFamily: 'system-ui, sans-serif',
-      fontSize: '18px',
+      fontSize: '16px',
       color: '#FFFFFF',
+      fontStyle: 'bold',
     }).setOrigin(0.5, 0.5)
 
     if (book.totalErrors > 0) {

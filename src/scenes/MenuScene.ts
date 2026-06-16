@@ -46,6 +46,7 @@ export class MenuScene extends Phaser.Scene {
       const y = 260 + index * 130
       const level = this.levels[brand.id]
       const book = errorBookManager.getBrandErrorBook(brand.id)
+      const hasErrors = book.totalErrors > 0
 
       const card = this.add.rectangle(x, y, 500, 100, 0x2D2D44, 1)
         .setStrokeStyle(3, Phaser.Display.Color.HexStringToColor(level.brandColor).color)
@@ -74,12 +75,18 @@ export class MenuScene extends Phaser.Scene {
         color: '#888888',
       }).setOrigin(1, 0.5)
 
-      if (book.totalErrors > 0) {
+      if (hasErrors) {
         this.add.text(x + 180, y + 15, `📚 错题 ${book.totalErrors}次 | ${book.drinks.length}款`, {
           fontFamily: 'system-ui, sans-serif',
           fontSize: '14px',
           color: '#FF9800',
           fontStyle: 'bold',
+        }).setOrigin(1, 0.5)
+      } else {
+        this.add.text(x + 180, y + 15, `📚 暂无错题记录`, {
+          fontFamily: 'system-ui, sans-serif',
+          fontSize: '14px',
+          color: '#666666',
         }).setOrigin(1, 0.5)
       }
 
@@ -102,18 +109,19 @@ export class MenuScene extends Phaser.Scene {
         card.setFillStyle(0x2D2D44)
       })
 
-      if (book.totalErrors > 0) {
-        const specialBtn = this.add.rectangle(x + 180, y + 15, 120, 36, 0xFF9800, 0.9)
-          .setStrokeStyle(2, 0xFFC107)
-          .setInteractive({ useHandCursor: true })
+      const specialBtn = this.add.rectangle(x + 180, y + 15, 120, 36,
+        hasErrors ? 0xFF9800 : 0x4A4A6A, hasErrors ? 0.9 : 0.6)
+        .setStrokeStyle(2, hasErrors ? 0xFFC107 : 0x6A6A8A)
+        .setInteractive({ useHandCursor: hasErrors })
 
-        this.add.text(x + 180, y + 15, '🎯 专项训练', {
-          fontFamily: 'system-ui, sans-serif',
-          fontSize: '14px',
-          color: '#FFFFFF',
-          fontStyle: 'bold',
-        }).setOrigin(0.5)
+      this.add.text(x + 180, y + 15, hasErrors ? '🎯 专项训练' : '暂无错题', {
+        fontFamily: 'system-ui, sans-serif',
+        fontSize: '14px',
+        color: hasErrors ? '#FFFFFF' : '#888888',
+        fontStyle: 'bold',
+      }).setOrigin(0.5)
 
+      if (hasErrors) {
         specialBtn.on('pointerdown', () => {
           specialBtnClicked = true
           audioManager.playSound('click')
