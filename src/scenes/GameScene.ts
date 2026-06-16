@@ -2,6 +2,7 @@ import Phaser from 'phaser'
 import type { LevelConfig, Drink, Step, GameStats } from '../types'
 import { STEP_COLORS } from '../types'
 import { audioManager } from '../utils/AudioManager'
+import { errorBookManager } from '../utils/ErrorBookManager'
 
 interface BeltItem {
   container: Phaser.GameObjects.Container
@@ -18,6 +19,8 @@ interface AssembledItem {
 export class GameScene extends Phaser.Scene {
   private level!: LevelConfig
   private levelId!: string
+  private isSpecialMode = false
+  private specialDrinks: Drink[] = []
   private currentDrinkIndex = 0
   private currentDrink!: Drink
   private currentStepIndex = 0
@@ -47,9 +50,47 @@ export class GameScene extends Phaser.Scene {
     super('GameScene')
   }
 
-  init(data: { levelId: string }): void {
+  init(data: { levelId: string; mode?: string }): void {
     this.levelId = data.levelId
     this.level = this.registry.get('levels')[data.levelId]
+    this.isSpecialMode = data.mode === 'special'
+
+    if (this.isSpecialMode) {
+      const book = errorBookManager.getBrandErrorBook(this.levelId)
+      const errorDrinkNames = new Set(book.drinks.map(d => d.drinkName))
+
+      const erroredDrinks: Drink[] = []
+      const normalDrinks: Drink[] = []
+
+      this.level.drinks.forEach(drink => {
+        if (errorDrinkNames.has(drink.name)) {
+          erroredDrinks.push(drink)
+        } else {
+          normalDrinks.push(drink)
+        }
+      })
+
+      erroredDrinks.sort((a, b) => {
+        const aError = book.drinks.find(d => d.drinkName === a.name)?.totalErrors || 0
+        const bError = book.drinks.find(d => d.drinkName === b.name)?.totalErrors || 0
+        return bError - aError
+      })
+
+      this.specialDrinks = []
+      while (this.specialDrinks.length < this.level.orderCount) {
+        if (erroredDrinks.length > 0) {
+          this.specialDrinks.push(...erroredDrinks)
+        }
+        if (normalDrinks.length > 0) {
+          this.specialDrinks.push(...normalDrinks)
+        }
+        if (erroredDrinks.length === 0 && normalDrinks.length === 0) {
+          break
+        }
+      }
+      this.specialDrinks = this.specialDrinks.slice(0, this.level.orderCount)
+    }
+
     this.timeRemaining = this.level.timeLimit
     this.currentDrinkIndex = 0
     this.currentStepIndex = 0
@@ -101,7 +142,8 @@ export class GameScene extends Phaser.Scene {
     const { width } = this.scale
     const brandColor = this.level.brandColor
 
-    this.add.text(30, 70, `${this.level.brand} - 培训模式`, {
+    const modeLabel = this.isSpecialMode ? ' - 🎯专项训练' : ' - 培训模式'
+    this.add.text(30, 70, `${this.level.brand}${modeLabel}`, {
       fontFamily: 'system-ui, sans-serif',
       fontSize: '22px',
       color: brandColor,
@@ -150,7 +192,8 @@ export class GameScene extends Phaser.Scene {
     const tickerY = 165
     const startX = width + 200
 
-    const upcomingDrinks = this.level.drinks.slice(this.currentDrinkIndex, this.currentDrinkIndex + 6)
+    const drinks = this.isSpecialMode ? this.specialDrinks : this.level.drinks
+    const upcomingDrinks = drinks.slice(this.currentDrinkIndex, this.currentDrinkIndex + 6)
     const displayDrinks = [...upcomingDrinks]
     while (displayDrinks.length < 6) {
       displayDrinks.push(...upcomingDrinks)
@@ -272,7 +315,8 @@ export class GameScene extends Phaser.Scene {
       return
     }
 
-    this.currentDrink = this.level.drinks[this.currentDrinkIndex]
+    const drinks = this.isSpecialMode ? this.specialDrinks : this.level.drinks
+    this.currentDrink = drinks[this.currentDrinkIndex]
     this.currentStepIndex = 0
     this.consecutiveErrors = 0
 

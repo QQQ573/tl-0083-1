@@ -1,13 +1,21 @@
 import Phaser from 'phaser'
 import type { GameStats, RankingBrand } from '../types'
 import { audioManager } from '../utils/AudioManager'
+import { errorBookManager } from '../utils/ErrorBookManager'
 
 interface RankEntry extends RankingBrand {
   isPlayer?: boolean
 }
 
+const BRAND_NAME_TO_ID: Record<string, string> = {
+  '星巴克': 'starbucks',
+  '喜茶': 'heytea',
+  '蜜雪冰城': 'mixue',
+}
+
 export class ResultScene extends Phaser.Scene {
   private stats!: GameStats
+  private levelId!: string
 
   constructor() {
     super('ResultScene')
@@ -15,6 +23,10 @@ export class ResultScene extends Phaser.Scene {
 
   create(): void {
     this.stats = this.registry.get('gameStats')
+    this.levelId = BRAND_NAME_TO_ID[this.stats.brandName] || 'starbucks'
+
+    errorBookManager.mergeErrors(this.levelId, this.stats.stepErrors)
+
     const { width, height } = this.scale
     const brandColor = this.stats.brandColor
 
@@ -45,7 +57,32 @@ export class ResultScene extends Phaser.Scene {
     this.showAvgTime()
     this.showRanking()
     this.showTopErrors()
+    this.showErrorBookSummary()
     this.createButtons()
+  }
+
+  private showErrorBookSummary(): void {
+    const { width } = this.scale
+    const book = errorBookManager.getBrandErrorBook(this.levelId)
+
+    if (book.totalErrors === 0) return
+
+    this.add.text(30, 560, '📚 累计错题本', {
+      fontFamily: 'system-ui, sans-serif',
+      fontSize: '18px',
+      color: '#FFD700',
+      fontStyle: 'bold',
+    })
+
+    const summary = book.drinks.slice(0, 3)
+    summary.forEach((d, i) => {
+      const y = 590 + i * 26
+      this.add.text(30, y, `${i + 1}. ${d.drinkName} (累计错 ${d.totalErrors} 次)`, {
+        fontFamily: 'system-ui, sans-serif',
+        fontSize: '14px',
+        color: '#FFCC80',
+      })
+    })
   }
 
   private showAvgTime(): void {
@@ -170,11 +207,11 @@ export class ResultScene extends Phaser.Scene {
   private createButtons(): void {
     const { width, height } = this.scale
 
-    const backBtn = this.add.rectangle(width / 2 - 100, height - 50, 180, 50, 0x3D3D54, 1)
+    const backBtn = this.add.rectangle(width / 2 - 220, height - 50, 160, 50, 0x3D3D54, 1)
       .setStrokeStyle(2, 0x6A6A8A)
       .setInteractive({ useHandCursor: true })
 
-    this.add.text(width / 2 - 100, height - 50, '← 返回菜单', {
+    this.add.text(width / 2 - 220, height - 50, '← 返回菜单', {
       fontFamily: 'system-ui, sans-serif',
       fontSize: '18px',
       color: '#FFFFFF',
@@ -185,12 +222,12 @@ export class ResultScene extends Phaser.Scene {
       this.scene.start('MenuScene')
     })
 
-    const retryBtn = this.add.rectangle(width / 2 + 100, height - 50, 180, 50,
+    const retryBtn = this.add.rectangle(width / 2, height - 50, 160, 50,
       Phaser.Display.Color.HexStringToColor(this.stats.brandColor).color, 0.8)
       .setStrokeStyle(2, Phaser.Display.Color.HexStringToColor(this.stats.brandColor).color)
       .setInteractive({ useHandCursor: true })
 
-    this.add.text(width / 2 + 100, height - 50, '🔄 再练一次', {
+    this.add.text(width / 2, height - 50, '🔄 再练一次', {
       fontFamily: 'system-ui, sans-serif',
       fontSize: '18px',
       color: '#FFFFFF',
@@ -198,10 +235,27 @@ export class ResultScene extends Phaser.Scene {
 
     retryBtn.on('pointerdown', () => {
       audioManager.playSound('click')
-      const levelId = this.stats.brandName === '星巴克' ? 'starbucks'
-        : this.stats.brandName === '喜茶' ? 'heytea' : 'mixue'
-      this.scene.start('GameScene', { levelId })
+      this.scene.start('GameScene', { levelId: this.levelId })
     })
+
+    const book = errorBookManager.getBrandErrorBook(this.levelId)
+    const trainBtn = this.add.rectangle(width / 2 + 220, height - 50, 200, 50,
+      book.totalErrors > 0 ? 0xFF9800 : 0x555555, book.totalErrors > 0 ? 0.9 : 0.5)
+      .setStrokeStyle(2, book.totalErrors > 0 ? 0xFFC107 : 0x777777)
+      .setInteractive({ useHandCursor: book.totalErrors > 0 })
+
+    this.add.text(width / 2 + 220, height - 50, book.totalErrors > 0 ? '🎯 去专项训练' : '暂无错题', {
+      fontFamily: 'system-ui, sans-serif',
+      fontSize: '18px',
+      color: '#FFFFFF',
+    }).setOrigin(0.5, 0.5)
+
+    if (book.totalErrors > 0) {
+      trainBtn.on('pointerdown', () => {
+        audioManager.playSound('click')
+        this.scene.start('GameScene', { levelId: this.levelId, mode: 'special' })
+      })
+    }
 
     const muted = this.registry.get('muted')
     const muteBtn = this.add.text(width - 30, 40, muted ? '🔇' : '🔊', {

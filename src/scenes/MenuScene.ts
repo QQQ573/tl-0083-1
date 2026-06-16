@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 import type { LevelConfig } from '../types'
 import { audioManager } from '../utils/AudioManager'
+import { errorBookManager } from '../utils/ErrorBookManager'
 
 export class MenuScene extends Phaser.Scene {
   private levels!: Record<string, LevelConfig>
@@ -42,10 +43,11 @@ export class MenuScene extends Phaser.Scene {
 
     brands.forEach((brand, index) => {
       const x = width / 2
-      const y = 260 + index * 140
+      const y = 260 + index * 130
       const level = this.levels[brand.id]
+      const book = errorBookManager.getBrandErrorBook(brand.id)
 
-      const card = this.add.rectangle(x, y, 500, 110, 0x2D2D44, 1)
+      const card = this.add.rectangle(x, y, 500, 100, 0x2D2D44, 1)
         .setStrokeStyle(3, Phaser.Display.Color.HexStringToColor(level.brandColor).color)
         .setInteractive({ useHandCursor: true })
 
@@ -62,17 +64,32 @@ export class MenuScene extends Phaser.Scene {
 
       this.add.text(x - 120, y + 15, brand.desc, {
         fontFamily: 'system-ui, sans-serif',
-        fontSize: '18px',
+        fontSize: '16px',
         color: '#CCCCCC',
       }).setOrigin(0, 0.5)
 
-      this.add.text(x + 180, y, `${level.timeLimit}秒 / ${level.orderCount}单`, {
+      this.add.text(x + 180, y - 25, `${level.timeLimit}秒 / ${level.orderCount}单`, {
         fontFamily: 'system-ui, sans-serif',
-        fontSize: '16px',
+        fontSize: '14px',
         color: '#888888',
       }).setOrigin(1, 0.5)
 
+      if (book.totalErrors > 0) {
+        this.add.text(x + 180, y + 15, `📚 错题 ${book.totalErrors}次 | ${book.drinks.length}款`, {
+          fontFamily: 'system-ui, sans-serif',
+          fontSize: '14px',
+          color: '#FF9800',
+          fontStyle: 'bold',
+        }).setOrigin(1, 0.5)
+      }
+
+      let specialBtnClicked = false
+
       card.on('pointerdown', () => {
+        if (specialBtnClicked) {
+          specialBtnClicked = false
+          return
+        }
         audioManager.playSound('click')
         this.startGame(brand.id)
       })
@@ -84,10 +101,30 @@ export class MenuScene extends Phaser.Scene {
       card.on('pointerout', () => {
         card.setFillStyle(0x2D2D44)
       })
+
+      if (book.totalErrors > 0) {
+        const specialBtn = this.add.rectangle(x + 180, y + 15, 120, 36, 0xFF9800, 0.9)
+          .setStrokeStyle(2, 0xFFC107)
+          .setInteractive({ useHandCursor: true })
+
+        this.add.text(x + 180, y + 15, '🎯 专项训练', {
+          fontFamily: 'system-ui, sans-serif',
+          fontSize: '14px',
+          color: '#FFFFFF',
+          fontStyle: 'bold',
+        }).setOrigin(0.5)
+
+        specialBtn.on('pointerdown', () => {
+          specialBtnClicked = true
+          audioManager.playSound('click')
+          this.startGame(brand.id, true)
+        })
+      }
     })
 
     this.createMuteButton()
-    this.add.text(width / 2, height - 40, '点击选择品牌开始培训', {
+    this.createClearBookButton()
+    this.add.text(width / 2, height - 40, '点击选择品牌开始培训，或点击专项训练优先练习易错饮品', {
       fontFamily: 'system-ui, sans-serif',
       fontSize: '16px',
       color: '#666666',
@@ -109,7 +146,28 @@ export class MenuScene extends Phaser.Scene {
     })
   }
 
-  private startGame(levelId: string): void {
-    this.scene.start('GameScene', { levelId })
+  private createClearBookButton(): void {
+    const totalErrors = errorBookManager.getTotalErrors()
+    if (totalErrors === 0) return
+
+    const clearBtn = this.add.text(40, 40, '🗑️ 清空错题本', {
+      fontFamily: 'system-ui, sans-serif',
+      fontSize: '14px',
+      color: '#FF6B6B',
+    }).setOrigin(0, 0.5).setInteractive({ useHandCursor: true })
+
+    clearBtn.on('pointerdown', () => {
+      errorBookManager.clearAll()
+      audioManager.playSound('click')
+      this.scene.restart()
+    })
+  }
+
+  private startGame(levelId: string, isSpecial = false): void {
+    const data: { levelId: string; mode?: string } = { levelId }
+    if (isSpecial) {
+      data.mode = 'special'
+    }
+    this.scene.start('GameScene', data)
   }
 }
