@@ -1,0 +1,195 @@
+{
+  "id": "mixue",
+  "brand": "蜜雪冰城",
+  "brandColor": "#0099FF",
+  "timeLimit": 150,
+  "orderCount": 12,
+  "drinks": [
+    {
+      "name": "棒打鲜橙",
+      "modifier": "正常糖",
+      "steps": [
+        { "id": "m-cup", "name": "冷饮杯", "type": "cup", "emoji": "🥤" },
+        { "id": "m-orange", "name": "鲜橙片", "type": "fruit", "emoji": "🍊" },
+        { "id": "m-tea-o", "name": "橙味茶底", "type": "base", "emoji": "🍵" },
+        { "id": "m-syrup", "name": "糖浆", "type": "syrup", "emoji": "🍯" },
+        { "id": "m-ice", "name": "冰块", "type": "ice", "emoji": "🧊" }
+      ],
+      "distractors": [
+        { "id": "m-cheese-d", "name": "芝士奶盖", "type": "cheese", "emoji": "🧀" },
+        { "id": "m-boba-d", "name": "珍珠", "type": "boba", "emoji": "⚫" }
+      ]
+    },
+    {
+      "name": "冰鲜柠檬水",
+      "modifier": "少糖",
+      "steps": [
+        { "id": "m-cup", "name": "冷饮杯", "type": "cup", "emoji": "🥤" },
+        { "id": "m-lemon", "name": "柠檬片", "type": "fruit", "emoji": "🍋" },
+        { "id": "m-tea-l", "name": "绿茶底", "type": "base", "emoji": "🍵" },
+        { "id": "m-syrup-s", "name": "少糖", "type": "syrup", "emoji": "🍯" },
+        { "id": "m-ice", "name": "冰块", "type": "ice", "emoji": "🧊" }
+      ],
+      "distractors": [
+        { "id": "m-milk-d", "name": "牛奶", "type": "milk", "emoji": "🥛" },
+        { "id": "m-whip-d", "name": "奶油雪顶", "type": "whip", "emoji": "🍦" }
+      ]
+    },
+    {
+      "name": "摇摇奶昔",
+      "modifier": "正常糖",
+      "steps": [
+        { "id": "m-cup", "name": "冷饮杯", "type": "cup", "emoji": "🥤" },
+        { "id": "m-milk-s", "name": "奶昔基底", "type": "milk", "emoji": "🥛" },
+        { "id": "m-syrup", "name": "糖浆", "type": "syrup", "emoji": "🍯" },
+        { "id": "m-ice", "name": "冰块", "type": "ice", "emoji": "🧊" }
+      ],
+      "distractors": [
+        { "id": "m-tea-d", "name": "茶底", "type": "base", "emoji": "🍵" },
+        { "id": "m-cheese-d2", "name": "芝士奶盖", "type": "cheese", "emoji": "🧀" }
+      ]
+    },
+    {
+      "name": "珍珠奶茶",
+      "modifier": "正常糖",
+      "steps": [
+        { "id": "m-cup", "name": "冷饮杯", "type": "cup", "emoji": "🥤" },
+        { "id": "m-boba", "name": "珍珠", "type": "boba", "emoji": "⚫" },
+        { "id": "m-tea-b", "name": "红茶底", "type": "base", "emoji": "🍵" },
+        { "id": "m-milk", "name": "鲜奶", "type": "milk", "emoji": "🥛" },
+        { "id": "m-ice", "name": "冰块", "type": "ice", "emoji": "🧊" }
+      ],
+      "distractors": [
+        { "id": "m-fruit-d", "name": "水果丁", "type": "fruit", "emoji": "🍓" },
+        { "id": "m-whip-d2", "name": "奶油雪顶", "type": "whip", "emoji": "🍦" }
+      ]
+    },
+    {
+      "name": "蜜桃四季春",
+      "modifier": "正常糖",
+      "steps": [
+        { "id": "m-cup", "name": "冷饮杯", "type": "cup", "emoji": "🥤" },
+        { "id": "m-peach", "name": "蜜桃丁", "type": "fruit", "emoji": "🍑" },
+        { "id": "m-tea-s", "name": "四季春茶底", "type": "base", "emoji": "🍵" },
+        { "id": "m-syrup", "name": "糖浆", "type": "syrup", "emoji": "🍯" },
+        { "id": "m-ice", "name": "冰块", "type": "ice", "emoji": "🧊" }
+      ],
+      "distractors": [
+        { "id": "m-milk-d2", "name": "牛奶", "type": "milk", "emoji": "🥛" },
+        { "id": "m-boba-d2", "name": "珍珠", "type": "boba", "emoji": "⚫" }
+      ]
+    },
+    {
+      "name": "杨枝甘露",
+      "modifier": "正常糖",
+      "steps": [
+        { "id": "m-cup", "name": "冷饮杯", "type": "cup", "emoji": "🥤" },
+        { "id": "m-mango", "name": "芒果丁", "type": "fruit", "emoji": "🥭" },
+        { "id": "m-coconut", "name": "椰奶", "type": "coconut", "emoji": "🥥" },
+        { "id": "m-grapefruit", "name": "西柚粒", "type": "fruit", "emoji": "🍊" },
+        { "id": "m-ice", "name": "冰块", "type": "ice", "emoji": "🧊" }
+      ],
+      "distractors": [
+        { "id": "m-cheese-d3", "name": "芝士奶盖", "type": "cheese", "emoji": "🧀" },
+        { "id": "m-boba-d3", "name": "珍珠", "type": "boba", "emoji": "⚫" }
+      ]
+    },
+    {
+      "name": "草莓摇摇奶昔",
+      "modifier": "正常糖",
+      "steps": [
+        { "id": "m-cup", "name": "冷饮杯", "type": "cup", "emoji": "🥤" },
+        { "id": "m-strawberry", "name": "草莓酱", "type": "jam", "emoji": "🍓" },
+        { "id": "m-milk-s", "name": "奶昔基底", "type": "milk", "emoji": "🥛" },
+        { "id": "m-ice", "name": "冰块", "type": "ice", "emoji": "🧊" }
+      ],
+      "distractors": [
+        { "id": "m-tea-d2", "name": "茶底", "type": "base", "emoji": "🍵" },
+        { "id": "m-whip-d3", "name": "奶油雪顶", "type": "whip", "emoji": "🍦" }
+      ]
+    },
+    {
+      "name": "芒果冰沙",
+      "modifier": "正常糖",
+      "steps": [
+        { "id": "m-cup", "name": "冷饮杯", "type": "cup", "emoji": "🥤" },
+        { "id": "m-mango", "name": "芒果丁", "type": "fruit", "emoji": "🥭" },
+        { "id": "m-milk-s", "name": "奶昔基底", "type": "milk", "emoji": "🥛" },
+        { "id": "m-ice", "name": "冰块", "type": "ice", "emoji": "🧊" }
+      ],
+      "distractors": [
+        { "id": "m-coconut-d", "name": "椰奶", "type": "coconut", "emoji": "🥥" },
+        { "id": "m-cheese-d4", "name": "芝士奶盖", "type": "cheese", "emoji": "🧀" }
+      ]
+    },
+    {
+      "name": "芋泥波波奶茶",
+      "modifier": "正常糖",
+      "steps": [
+        { "id": "m-cup", "name": "冷饮杯", "type": "cup", "emoji": "🥤" },
+        { "id": "m-taro", "name": "芋泥", "type": "taro", "emoji": "🟣" },
+        { "id": "m-boba", "name": "珍珠", "type": "boba", "emoji": "⚫" },
+        { "id": "m-tea-b", "name": "红茶底", "type": "base", "emoji": "🍵" },
+        { "id": "m-milk", "name": "鲜奶", "type": "milk", "emoji": "🥛" },
+        { "id": "m-ice", "name": "冰块", "type": "ice", "emoji": "🧊" }
+      ],
+      "distractors": [
+        { "id": "m-fruit-d2", "name": "水果丁", "type": "fruit", "emoji": "🍓" },
+        { "id": "m-syrup-d", "name": "糖浆", "type": "syrup", "emoji": "🍯" }
+      ]
+    },
+    {
+      "name": "红豆奶茶",
+      "modifier": "正常糖",
+      "steps": [
+        { "id": "m-cup", "name": "冷饮杯", "type": "cup", "emoji": "🥤" },
+        { "id": "m-redbean", "name": "红豆", "type": "redbean", "emoji": "🫘" },
+        { "id": "m-tea-b", "name": "红茶底", "type": "base", "emoji": "🍵" },
+        { "id": "m-milk", "name": "鲜奶", "type": "milk", "emoji": "🥛" },
+        { "id": "m-ice", "name": "冰块", "type": "ice", "emoji": "🧊" }
+      ],
+      "distractors": [
+        { "id": "m-boba-d4", "name": "珍珠", "type": "boba", "emoji": "⚫" },
+        { "id": "m-whip-d4", "name": "奶油雪顶", "type": "whip", "emoji": "🍦" }
+      ]
+    },
+    {
+      "name": "椰椰蜜雪",
+      "modifier": "正常糖",
+      "steps": [
+        { "id": "m-cup", "name": "冷饮杯", "type": "cup", "emoji": "🥤" },
+        { "id": "m-coconut", "name": "椰奶", "type": "coconut", "emoji": "🥥" },
+        { "id": "m-tea-s", "name": "四季春茶底", "type": "base", "emoji": "🍵" },
+        { "id": "m-syrup", "name": "糖浆", "type": "syrup", "emoji": "🍯" },
+        { "id": "m-ice", "name": "冰块", "type": "ice", "emoji": "🧊" }
+      ],
+      "distractors": [
+        { "id": "m-milk-d3", "name": "牛奶", "type": "milk", "emoji": "🥛" },
+        { "id": "m-cheese-d5", "name": "芝士奶盖", "type": "cheese", "emoji": "🧀" }
+      ]
+    },
+    {
+      "name": "雪顶咖啡",
+      "modifier": "正常糖",
+      "steps": [
+        { "id": "m-cup", "name": "冷饮杯", "type": "cup", "emoji": "🥤" },
+        { "id": "m-ice", "name": "冰块", "type": "ice", "emoji": "🧊" },
+        { "id": "m-coffee", "name": "咖啡原液", "type": "coffee", "emoji": "☕" },
+        { "id": "m-milk", "name": "鲜奶", "type": "milk", "emoji": "🥛" },
+        { "id": "m-whip", "name": "奶油雪顶", "type": "whip", "emoji": "🍦" }
+      ],
+      "distractors": [
+        { "id": "m-tea-d3", "name": "茶底", "type": "base", "emoji": "🍵" },
+        { "id": "m-boba-d5", "name": "珍珠", "type": "boba", "emoji": "⚫" }
+      ]
+    }
+  ],
+  "rankingBrands": [
+    { "name": "蜜雪冰城", "avgSeconds": 6.5, "color": "#0099FF" },
+    { "name": "茶百道", "avgSeconds": 8.0, "color": "#4ECDC4" },
+    { "name": "古茗", "avgSeconds": 7.5, "color": "#45B7D1" },
+    { "name": "沪上阿姨", "avgSeconds": 9.0, "color": "#FF6B6B" },
+    { "name": "书亦", "avgSeconds": 8.8, "color": "#DDA0DD" },
+    { "name": "甜啦啦", "avgSeconds": 6.0, "color": "#FFB347" }
+  ]
+}

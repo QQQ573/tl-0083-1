@@ -1,0 +1,198 @@
+{
+  "id": "heytea",
+  "brand": "喜茶",
+  "brandColor": "#F5A623",
+  "timeLimit": 180,
+  "orderCount": 12,
+  "drinks": [
+    {
+      "name": "多肉葡萄",
+      "modifier": "去芝士",
+      "steps": [
+        { "id": "h-cup", "name": "冷饮杯", "type": "cup", "emoji": "🥤" },
+        { "id": "h-grape", "name": "葡萄果肉", "type": "fruit", "emoji": "🍇" },
+        { "id": "h-tea-g", "name": "绿茶底", "type": "base", "emoji": "🍵" },
+        { "id": "h-grape-jam", "name": "葡萄汁", "type": "jam", "emoji": "🫙" },
+        { "id": "h-ice", "name": "冰块", "type": "ice", "emoji": "🧊" }
+      ],
+      "distractors": [
+        { "id": "h-cheese-d", "name": "芝士奶盖", "type": "cheese", "emoji": "🧀" },
+        { "id": "h-coffee-d", "name": "咖啡", "type": "coffee", "emoji": "☕" }
+      ]
+    },
+    {
+      "name": "芒芒甘露",
+      "modifier": "正常糖",
+      "steps": [
+        { "id": "h-cup", "name": "冷饮杯", "type": "cup", "emoji": "🥤" },
+        { "id": "h-mango", "name": "芒果丁", "type": "fruit", "emoji": "🥭" },
+        { "id": "h-coconut-m", "name": "椰奶", "type": "coconut", "emoji": "🥥" },
+        { "id": "h-tea-g", "name": "绿茶底", "type": "base", "emoji": "🍵" },
+        { "id": "h-ice", "name": "冰块", "type": "ice", "emoji": "🧊" },
+        { "id": "h-cheese", "name": "芝士奶盖", "type": "cheese", "emoji": "🧀" }
+      ],
+      "distractors": [
+        { "id": "h-boba-d", "name": "珍珠", "type": "boba", "emoji": "⚫" },
+        { "id": "h-syrup-d", "name": "糖浆", "type": "syrup", "emoji": "🍯" }
+      ]
+    },
+    {
+      "name": "芝士莓莓",
+      "modifier": "少糖",
+      "steps": [
+        { "id": "h-cup", "name": "冷饮杯", "type": "cup", "emoji": "🥤" },
+        { "id": "h-strawberry", "name": "草莓丁", "type": "fruit", "emoji": "🍓" },
+        { "id": "h-tea-g", "name": "绿茶底", "type": "base", "emoji": "🍵" },
+        { "id": "h-syrup-s", "name": "少糖", "type": "syrup", "emoji": "🍯" },
+        { "id": "h-ice", "name": "冰块", "type": "ice", "emoji": "🧊" },
+        { "id": "h-cheese", "name": "芝士奶盖", "type": "cheese", "emoji": "🧀" }
+      ],
+      "distractors": [
+        { "id": "h-mango-d", "name": "芒果丁", "type": "fruit", "emoji": "🥭" },
+        { "id": "h-milk-d", "name": "牛奶", "type": "milk", "emoji": "🥛" }
+      ]
+    },
+    {
+      "name": "满杯红柚",
+      "modifier": "正常糖",
+      "steps": [
+        { "id": "h-cup", "name": "冷饮杯", "type": "cup", "emoji": "🥤" },
+        { "id": "h-grapefruit", "name": "红柚果肉", "type": "fruit", "emoji": "🍊" },
+        { "id": "h-tea-g", "name": "绿茶底", "type": "base", "emoji": "🍵" },
+        { "id": "h-ice", "name": "冰块", "type": "ice", "emoji": "🧊" },
+        { "id": "h-cheese", "name": "芝士奶盖", "type": "cheese", "emoji": "🧀" }
+      ],
+      "distractors": [
+        { "id": "h-boba-d2", "name": "珍珠", "type": "boba", "emoji": "⚫" },
+        { "id": "h-coffee-d2", "name": "咖啡", "type": "coffee", "emoji": "☕" }
+      ]
+    },
+    {
+      "name": "烤黑糖波波",
+      "modifier": "正常糖",
+      "steps": [
+        { "id": "h-cup", "name": "冷饮杯", "type": "cup", "emoji": "🥤" },
+        { "id": "h-boba", "name": "黑糖珍珠", "type": "boba", "emoji": "⚫" },
+        { "id": "h-milk", "name": "鲜牛奶", "type": "milk", "emoji": "🥛" },
+        { "id": "h-ice", "name": "冰块", "type": "ice", "emoji": "🧊" },
+        { "id": "h-cheese", "name": "芝士奶盖", "type": "cheese", "emoji": "🧀" }
+      ],
+      "distractors": [
+        { "id": "h-fruit-d", "name": "水果丁", "type": "fruit", "emoji": "🍓" },
+        { "id": "h-tea-d", "name": "茶底", "type": "base", "emoji": "🍵" }
+      ]
+    },
+    {
+      "name": "芝士桃桃",
+      "modifier": "少冰",
+      "steps": [
+        { "id": "h-cup", "name": "冷饮杯", "type": "cup", "emoji": "🥤" },
+        { "id": "h-peach", "name": "桃肉丁", "type": "fruit", "emoji": "🍑" },
+        { "id": "h-tea-g", "name": "绿茶底", "type": "base", "emoji": "🍵" },
+        { "id": "h-ice-l", "name": "少冰", "type": "ice", "emoji": "🧊" },
+        { "id": "h-cheese", "name": "芝士奶盖", "type": "cheese", "emoji": "🧀" }
+      ],
+      "distractors": [
+        { "id": "h-coconut-d", "name": "椰奶", "type": "coconut", "emoji": "🥥" },
+        { "id": "h-syrup-d2", "name": "糖浆", "type": "syrup", "emoji": "🍯" }
+      ]
+    },
+    {
+      "name": "满杯百香果",
+      "modifier": "正常糖",
+      "steps": [
+        { "id": "h-cup", "name": "冷饮杯", "type": "cup", "emoji": "🥤" },
+        { "id": "h-passion", "name": "百香果", "type": "fruit", "emoji": "🫒" },
+        { "id": "h-tea-g", "name": "绿茶底", "type": "base", "emoji": "🍵" },
+        { "id": "h-ice", "name": "冰块", "type": "ice", "emoji": "🧊" },
+        { "id": "h-syrup", "name": "糖浆", "type": "syrup", "emoji": "🍯" }
+      ],
+      "distractors": [
+        { "id": "h-cheese-d2", "name": "芝士奶盖", "type": "cheese", "emoji": "🧀" },
+        { "id": "h-milk-d2", "name": "牛奶", "type": "milk", "emoji": "🥛" }
+      ]
+    },
+    {
+      "name": "生打椰椰",
+      "modifier": "正常糖",
+      "steps": [
+        { "id": "h-cup", "name": "冷饮杯", "type": "cup", "emoji": "🥤" },
+        { "id": "h-coconut", "name": "生椰乳", "type": "coconut", "emoji": "🥥" },
+        { "id": "h-tea-g", "name": "绿茶底", "type": "base", "emoji": "🍵" },
+        { "id": "h-ice", "name": "冰块", "type": "ice", "emoji": "🧊" }
+      ],
+      "distractors": [
+        { "id": "h-cheese-d3", "name": "芝士奶盖", "type": "cheese", "emoji": "🧀" },
+        { "id": "h-boba-d3", "name": "珍珠", "type": "boba", "emoji": "⚫" }
+      ]
+    },
+    {
+      "name": "超厚牛乳波波",
+      "modifier": "正常糖",
+      "steps": [
+        { "id": "h-cup", "name": "冷饮杯", "type": "cup", "emoji": "🥤" },
+        { "id": "h-boba", "name": "黑糖珍珠", "type": "boba", "emoji": "⚫" },
+        { "id": "h-milk-h", "name": "厚牛乳", "type": "milk", "emoji": "🥛" },
+        { "id": "h-ice", "name": "冰块", "type": "ice", "emoji": "🧊" },
+        { "id": "h-cheese", "name": "芝士奶盖", "type": "cheese", "emoji": "🧀" }
+      ],
+      "distractors": [
+        { "id": "h-fruit-d2", "name": "水果丁", "type": "fruit", "emoji": "🍓" },
+        { "id": "h-tea-d2", "name": "茶底", "type": "base", "emoji": "🍵" }
+      ]
+    },
+    {
+      "name": "芝士芒果",
+      "modifier": "少冰",
+      "steps": [
+        { "id": "h-cup", "name": "冷饮杯", "type": "cup", "emoji": "🥤" },
+        { "id": "h-mango", "name": "芒果丁", "type": "fruit", "emoji": "🥭" },
+        { "id": "h-tea-g", "name": "绿茶底", "type": "base", "emoji": "🍵" },
+        { "id": "h-ice-l", "name": "少冰", "type": "ice", "emoji": "🧊" },
+        { "id": "h-cheese", "name": "芝士奶盖", "type": "cheese", "emoji": "🧀" }
+      ],
+      "distractors": [
+        { "id": "h-coconut-d2", "name": "椰奶", "type": "coconut", "emoji": "🥥" },
+        { "id": "h-boba-d4", "name": "珍珠", "type": "boba", "emoji": "⚫" }
+      ]
+    },
+    {
+      "name": "杨枝甘露",
+      "modifier": "正常糖",
+      "steps": [
+        { "id": "h-cup", "name": "冷饮杯", "type": "cup", "emoji": "🥤" },
+        { "id": "h-mango", "name": "芒果丁", "type": "fruit", "emoji": "🥭" },
+        { "id": "h-grapefruit", "name": "西柚粒", "type": "fruit", "emoji": "🍊" },
+        { "id": "h-coconut-m", "name": "椰奶", "type": "coconut", "emoji": "🥥" },
+        { "id": "h-ice", "name": "冰块", "type": "ice", "emoji": "🧊" }
+      ],
+      "distractors": [
+        { "id": "h-cheese-d4", "name": "芝士奶盖", "type": "cheese", "emoji": "🧀" },
+        { "id": "h-tea-d3", "name": "茶底", "type": "base", "emoji": "🍵" }
+      ]
+    },
+    {
+      "name": "芝士葡萄",
+      "modifier": "正常糖",
+      "steps": [
+        { "id": "h-cup", "name": "冷饮杯", "type": "cup", "emoji": "🥤" },
+        { "id": "h-grape", "name": "葡萄果肉", "type": "fruit", "emoji": "🍇" },
+        { "id": "h-tea-g", "name": "绿茶底", "type": "base", "emoji": "🍵" },
+        { "id": "h-ice", "name": "冰块", "type": "ice", "emoji": "🧊" },
+        { "id": "h-cheese", "name": "芝士奶盖", "type": "cheese", "emoji": "🧀" }
+      ],
+      "distractors": [
+        { "id": "h-milk-d3", "name": "牛奶", "type": "milk", "emoji": "🥛" },
+        { "id": "h-syrup-d3", "name": "糖浆", "type": "syrup", "emoji": "🍯" }
+      ]
+    }
+  ],
+  "rankingBrands": [
+    { "name": "喜茶", "avgSeconds": 9.0, "color": "#F5A623" },
+    { "name": "奈雪", "avgSeconds": 10.2, "color": "#68B746" },
+    { "name": "乐乐茶", "avgSeconds": 11.5, "color": "#FF6B6B" },
+    { "name": "茶百道", "avgSeconds": 8.5, "color": "#4ECDC4" },
+    { "name": "古茗", "avgSeconds": 7.8, "color": "#45B7D1" },
+    { "name": "书亦", "avgSeconds": 9.8, "color": "#DDA0DD" }
+  ]
+}

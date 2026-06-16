@@ -1,0 +1,190 @@
+{
+  "id": "starbucks",
+  "brand": "星巴克",
+  "brandColor": "#00704A",
+  "timeLimit": 180,
+  "orderCount": 12,
+  "drinks": [
+    {
+      "name": "冰美式",
+      "modifier": "少冰",
+      "steps": [
+        { "id": "s-cup", "name": "冷饮杯", "type": "cup", "emoji": "🥤" },
+        { "id": "s-ice-s", "name": "少冰", "type": "ice", "emoji": "🧊" },
+        { "id": "s-espresso", "name": "浓缩咖啡", "type": "coffee", "emoji": "☕" },
+        { "id": "s-water", "name": "纯净水", "type": "base", "emoji": "💧" }
+      ],
+      "distractors": [
+        { "id": "s-milk-d", "name": "牛奶", "type": "milk", "emoji": "🥛" },
+        { "id": "s-foam-d", "name": "奶泡", "type": "cream", "emoji": "☁️" }
+      ]
+    },
+    {
+      "name": "拿铁",
+      "modifier": "正常糖",
+      "steps": [
+        { "id": "s-cup", "name": "热饮杯", "type": "cup", "emoji": "☕" },
+        { "id": "s-espresso", "name": "浓缩咖啡", "type": "coffee", "emoji": "☕" },
+        { "id": "s-milk", "name": "热牛奶", "type": "milk", "emoji": "🥛" },
+        { "id": "s-foam", "name": "奶泡", "type": "cream", "emoji": "☁️" }
+      ],
+      "distractors": [
+        { "id": "s-ice-d", "name": "冰块", "type": "ice", "emoji": "🧊" },
+        { "id": "s-whip-d", "name": "鲜奶油", "type": "whip", "emoji": "🍦" }
+      ]
+    },
+    {
+      "name": "卡布奇诺",
+      "modifier": "多奶泡",
+      "steps": [
+        { "id": "s-cup", "name": "热饮杯", "type": "cup", "emoji": "☕" },
+        { "id": "s-espresso", "name": "浓缩咖啡", "type": "coffee", "emoji": "☕" },
+        { "id": "s-milk", "name": "热牛奶", "type": "milk", "emoji": "🥛" },
+        { "id": "s-foam-m", "name": "厚奶泡", "type": "cream", "emoji": "☁️" },
+        { "id": "s-powder", "name": "可可粉", "type": "topping", "emoji": "🍫" }
+      ],
+      "distractors": [
+        { "id": "s-syrup-d", "name": "糖浆", "type": "syrup", "emoji": "🍯" },
+        { "id": "s-ice-d2", "name": "冰块", "type": "ice", "emoji": "🧊" }
+      ]
+    },
+    {
+      "name": "摩卡",
+      "modifier": "少奶油",
+      "steps": [
+        { "id": "s-cup", "name": "热饮杯", "type": "cup", "emoji": "☕" },
+        { "id": "s-mocha-syrup", "name": "摩卡酱", "type": "syrup", "emoji": "🍫" },
+        { "id": "s-espresso", "name": "浓缩咖啡", "type": "coffee", "emoji": "☕" },
+        { "id": "s-milk", "name": "蒸牛奶", "type": "milk", "emoji": "🥛" },
+        { "id": "s-whip-l", "name": "少奶油", "type": "whip", "emoji": "🍦" }
+      ],
+      "distractors": [
+        { "id": "s-caramel-d", "name": "焦糖酱", "type": "syrup", "emoji": "🍯" },
+        { "id": "s-fruit-d", "name": "水果丁", "type": "fruit", "emoji": "🍓" }
+      ]
+    },
+    {
+      "name": "焦糖玛奇朵",
+      "modifier": "正常",
+      "steps": [
+        { "id": "s-cup", "name": "热饮杯", "type": "cup", "emoji": "☕" },
+        { "id": "s-vanilla", "name": "香草糖浆", "type": "syrup", "emoji": "🍯" },
+        { "id": "s-milk", "name": "热牛奶", "type": "milk", "emoji": "🥛" },
+        { "id": "s-foam", "name": "奶泡", "type": "cream", "emoji": "☁️" },
+        { "id": "s-espresso", "name": "浓缩咖啡", "type": "coffee", "emoji": "☕" },
+        { "id": "s-caramel", "name": "焦糖酱", "type": "syrup", "emoji": "🍯" }
+      ],
+      "distractors": [
+        { "id": "s-whip-d2", "name": "鲜奶油", "type": "whip", "emoji": "🍦" },
+        { "id": "s-ice-d3", "name": "冰块", "type": "ice", "emoji": "🧊" }
+      ]
+    },
+    {
+      "name": "香草拿铁",
+      "modifier": "正常糖",
+      "steps": [
+        { "id": "s-cup", "name": "热饮杯", "type": "cup", "emoji": "☕" },
+        { "id": "s-vanilla", "name": "香草糖浆", "type": "syrup", "emoji": "🍯" },
+        { "id": "s-espresso", "name": "浓缩咖啡", "type": "coffee", "emoji": "☕" },
+        { "id": "s-milk", "name": "热牛奶", "type": "milk", "emoji": "🥛" },
+        { "id": "s-foam", "name": "奶泡", "type": "cream", "emoji": "☁️" }
+      ],
+      "distractors": [
+        { "id": "s-mocha-d", "name": "摩卡酱", "type": "syrup", "emoji": "🍫" },
+        { "id": "s-boba-d", "name": "珍珠", "type": "boba", "emoji": "⚫" }
+      ]
+    },
+    {
+      "name": "浓缩咖啡",
+      "modifier": "双份",
+      "steps": [
+        { "id": "s-cup-s", "name": "小杯", "type": "cup", "emoji": "☕" },
+        { "id": "s-espresso-d", "name": "双份浓缩", "type": "coffee", "emoji": "☕" }
+      ],
+      "distractors": [
+        { "id": "s-milk-d2", "name": "牛奶", "type": "milk", "emoji": "🥛" },
+        { "id": "s-ice-d4", "name": "冰块", "type": "ice", "emoji": "🧊" },
+        { "id": "s-whip-d3", "name": "鲜奶油", "type": "whip", "emoji": "🍦" }
+      ]
+    },
+    {
+      "name": "抹茶拿铁",
+      "modifier": "正常糖",
+      "steps": [
+        { "id": "s-cup", "name": "热饮杯", "type": "cup", "emoji": "☕" },
+        { "id": "s-matcha", "name": "抹茶粉", "type": "base", "emoji": "🍵" },
+        { "id": "s-syrup-g", "name": "糖浆", "type": "syrup", "emoji": "🍯" },
+        { "id": "s-milk", "name": "热牛奶", "type": "milk", "emoji": "🥛" }
+      ],
+      "distractors": [
+        { "id": "s-espresso-d2", "name": "浓缩咖啡", "type": "coffee", "emoji": "☕" },
+        { "id": "s-foam-d2", "name": "奶泡", "type": "cream", "emoji": "☁️" }
+      ]
+    },
+    {
+      "name": "美式",
+      "modifier": "多冰",
+      "steps": [
+        { "id": "s-cup", "name": "冷饮杯", "type": "cup", "emoji": "🥤" },
+        { "id": "s-ice-m", "name": "多冰", "type": "ice", "emoji": "🧊" },
+        { "id": "s-espresso", "name": "浓缩咖啡", "type": "coffee", "emoji": "☕" },
+        { "id": "s-water", "name": "纯净水", "type": "base", "emoji": "💧" }
+      ],
+      "distractors": [
+        { "id": "s-milk-d3", "name": "牛奶", "type": "milk", "emoji": "🥛" },
+        { "id": "s-syrup-d2", "name": "糖浆", "type": "syrup", "emoji": "🍯" }
+      ]
+    },
+    {
+      "name": "燕麦拿铁",
+      "modifier": "少冰",
+      "steps": [
+        { "id": "s-cup", "name": "冷饮杯", "type": "cup", "emoji": "🥤" },
+        { "id": "s-ice-s", "name": "少冰", "type": "ice", "emoji": "🧊" },
+        { "id": "s-espresso", "name": "浓缩咖啡", "type": "coffee", "emoji": "☕" },
+        { "id": "s-oatmilk", "name": "燕麦奶", "type": "milk", "emoji": "🌾" }
+      ],
+      "distractors": [
+        { "id": "s-foam-d3", "name": "奶泡", "type": "cream", "emoji": "☁️" },
+        { "id": "s-whip-d4", "name": "鲜奶油", "type": "whip", "emoji": "🍦" }
+      ]
+    },
+    {
+      "name": "冷萃咖啡",
+      "modifier": "正常",
+      "steps": [
+        { "id": "s-cup", "name": "冷饮杯", "type": "cup", "emoji": "🥤" },
+        { "id": "s-ice", "name": "冰块", "type": "ice", "emoji": "🧊" },
+        { "id": "s-coldbrew", "name": "冷萃原液", "type": "coffee", "emoji": "☕" },
+        { "id": "s-water", "name": "纯净水", "type": "base", "emoji": "💧" }
+      ],
+      "distractors": [
+        { "id": "s-milk-d4", "name": "牛奶", "type": "milk", "emoji": "🥛" },
+        { "id": "s-espresso-d3", "name": "浓缩咖啡", "type": "coffee", "emoji": "☕" }
+      ]
+    },
+    {
+      "name": "星冰乐",
+      "modifier": "正常糖",
+      "steps": [
+        { "id": "s-cup", "name": "冷饮杯", "type": "cup", "emoji": "🥤" },
+        { "id": "s-ice", "name": "冰块", "type": "ice", "emoji": "🧊" },
+        { "id": "s-milk", "name": "牛奶", "type": "milk", "emoji": "🥛" },
+        { "id": "s-espresso", "name": "浓缩咖啡", "type": "coffee", "emoji": "☕" },
+        { "id": "s-whip", "name": "鲜奶油", "type": "whip", "emoji": "🍦" }
+      ],
+      "distractors": [
+        { "id": "s-foam-d4", "name": "奶泡", "type": "cream", "emoji": "☁️" },
+        { "id": "s-caramel-d2", "name": "焦糖酱", "type": "syrup", "emoji": "🍯" }
+      ]
+    }
+  ],
+  "rankingBrands": [
+    { "name": "瑞幸", "avgSeconds": 8.2, "color": "#003F88" },
+    { "name": "星巴克", "avgSeconds": 9.5, "color": "#00704A" },
+    { "name": "Manner", "avgSeconds": 7.8, "color": "#C8102E" },
+    { "name": "Tims", "avgSeconds": 10.1, "color": "#C8102E" },
+    { "name": "Peet's", "avgSeconds": 11.0, "color": "#3C1A00" },
+    { "name": "Costa", "avgSeconds": 10.5, "color": "#9B1D20" }
+  ]
+}
